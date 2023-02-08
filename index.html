@@ -3,7 +3,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kelas pplg2</title>
+    <title>Restraunt</title>
     <!-- <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
@@ -225,8 +225,13 @@
       <div class="contact-container container">
         
         <div class="form-container" name="" >
-          <h2>Menfess</h2>
           <form name="submit-to-google-sheet">
+          <div class="alert alert-success alert-dismissible fade show d-none" role="alert">
+            <strong>terima kasih</strong> menfess anda sudah kami terima.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <h2>Menfess</h2>
+          
           <input type="text" id="from" name="from" placeholder="From" aria-describedby="from" required/>
           <input type="text" id="to" name="to" placeholder="To" aria-describedby="to" required/>
           <textarea
@@ -236,7 +241,11 @@
             name="pesan"
             placeholder="Type Your Message"
           ></textarea>
-          <button type="submit" class="btn">submit</button>
+          <button type="submit" class="btn btn-kirim">submit</button>
+          <button class="btn btn-primary btn-loading d-none" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Loading...
+          </button>
           </form>
         </div>
       </div>
@@ -246,16 +255,26 @@
   <!-- 
     .................../ JS Code for smooth scrolling /...................... -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       const scriptURL = 'https://script.google.com/macros/s/AKfycbzQD2c6wiu8KwR3alP40SYOcxQYejRGrbU9y9YKOnC-4fVkHLA0icrfidG_uyfAvX1HUg/exec'
       const form = document.forms['submit-to-google-sheet']
-    
+      const btnKirim = document.querySelector('.btn-kirim')
+      const btnLoading = document.querySelector('.btn-loading')
+      const myAlert = document.querySelector('.alert')
+
       form.addEventListener('submit', e => {
         e.preventDefault()
+        btnLoading.classList.toggle('d-none');
+        btnKirim.classList.toggle('d-none');
         fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-          .then(response => console.log('Success!', response))
-          .catch(error => console.error('Error!', error.message))
+          .then((response)  => {
+            btnLoading.classList.toggle('d-none');
+        btnKirim.classList.toggle('d-none');
+        myAlert.classList.toggle('d-none')
+        form.reset();
+            console.log('Success!', response)
+        })
+          .catch((error) => console.error('Error!', error.message))
       })
     </script>
 
